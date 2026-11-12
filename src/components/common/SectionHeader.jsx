@@ -31,13 +31,13 @@ export function SectionHeader({ index, eyebrow, title, titleId, description, ali
       <RevealItem as="div">
         <h2
           id={titleId}
-          className="mt-5 text-[clamp(2rem,4.4vw,3.25rem)] leading-[1.06] font-semibold tracking-[-0.035em] text-fg"
+          className="mt-5 text-[clamp(2.25rem,5.2vw,4rem)] leading-[1.03] font-semibold tracking-[-0.045em] text-fg"
         >
           {title}
         </h2>
       </RevealItem>
       {description && (
-        <RevealItem as="p" className="mt-5 max-w-2xl text-[1.0625rem] leading-relaxed text-muted">
+        <RevealItem as="p" className="mt-6 max-w-2xl text-[1.0625rem] leading-relaxed text-muted sm:text-lg">
           {description}
         </RevealItem>
       )}

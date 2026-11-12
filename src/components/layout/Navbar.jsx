@@ -1,13 +1,12 @@
 import { useCallback, useEffect, useRef } from 'react';
-import { Download } from 'lucide-react';
 import { navItems } from '../../data/navigation';
-import { profile } from '../../data/profile';
 import { useActiveSection } from '../../hooks/useActiveSection';
 import { useScrolled } from '../../hooks/useScrolled';
 import { useLockBodyScroll } from '../../hooks/useLockBodyScroll';
-import { Button } from '../common/Button';
 import { Container } from '../common/Container';
 import { Logo } from '../common/Logo';
+import { ResumeButton } from '../common/ResumeButton';
+import { ScrollProgress } from '../common/ScrollProgress';
 import { ThemeToggle } from '../common/ThemeToggle';
 import { MenuButton } from './MenuButton';
 import { MobileMenu } from './MobileMenu';
@@ -17,6 +16,10 @@ import { cn } from '../../utils/cn';
 const MOBILE_MENU_ID = 'mobile-menu';
 const SECTION_IDS = navItems.map((item) => item.id);
 
+/**
+ * Apple-style global navigation: a full-width bar that turns into frosted glass
+ * once the page scrolls, with a thin progress line along its top edge.
+ */
 export function Navbar({ menuOpen, setMenuOpen }) {
   const scrolled = useScrolled();
   const activeId = useActiveSection(SECTION_IDS);
@@ -44,15 +47,16 @@ export function Navbar({ menuOpen, setMenuOpen }) {
 
   return (
     <header className="fixed inset-x-0 top-0 z-50">
-      <Container className="pt-3 sm:pt-4">
-        <div
-          className={cn(
-            'flex h-14 items-center justify-between gap-4 rounded-full border pr-2 pl-4 transition-[background-color,border-color,box-shadow,backdrop-filter] duration-(--duration-base) ease-smooth',
-            elevated
-              ? 'border-line bg-[var(--nav-bg)] shadow-card backdrop-blur-xl backdrop-saturate-150'
-              : 'border-transparent bg-transparent',
-          )}
-        >
+      <div
+        className={cn(
+          'relative border-b transition-[background-color,border-color,backdrop-filter] duration-(--duration-base) ease-smooth',
+          elevated
+            ? 'border-line bg-[var(--nav-bg)] backdrop-blur-2xl backdrop-saturate-[1.8]'
+            : 'border-transparent bg-transparent',
+        )}
+      >
+        <ScrollProgress />
+        <Container className="flex h-14 items-center justify-between gap-3">
           <Logo onClick={() => closeMenu()} />
 
           <nav aria-label="Primary" className="hidden md:block">
@@ -61,16 +65,7 @@ export function Navbar({ menuOpen, setMenuOpen }) {
 
           <div className="flex items-center gap-2">
             <ThemeToggle />
-            <span className="hidden lg:contents">
-              <Button
-                href={profile.resume.href}
-                download={profile.resume.fileName}
-                size="sm"
-                icon={Download}
-              >
-                Résumé
-              </Button>
-            </span>
+            <ResumeButton />
             <span ref={menuButtonRef} className="md:hidden">
               <MenuButton
                 open={menuOpen}
@@ -79,8 +74,10 @@ export function Navbar({ menuOpen, setMenuOpen }) {
               />
             </span>
           </div>
-        </div>
+        </Container>
+      </div>
 
+      <Container>
         <MobileMenu id={MOBILE_MENU_ID} open={menuOpen} activeId={activeId} onClose={closeMenu} />
       </Container>
     </header>

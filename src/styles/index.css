@@ -6,9 +6,8 @@
 @custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
 
 @theme {
-  --font-sans: 'Inter Variable', 'Inter Fallback', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-serif: 'Instrument Serif', ui-serif, Georgia, serif;
-  --font-mono: 'JetBrains Mono Variable', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  --font-sans: 'Geist Variable', 'Geist Fallback', -apple-system, BlinkMacSystemFont, 'Segoe UI', ui-sans-serif, sans-serif;
+  --font-mono: 'Geist Mono Variable', ui-monospace, 'SFMono-Regular', Menlo, monospace;
 
   --radius-sm: 0.5rem;
   --radius-md: 0.75rem;
@@ -21,7 +20,7 @@
 
   /* Every `transition-*` utility defaults to the shared curve and fast duration,
      so hover states feel identical across components. */
-  --default-transition-duration: 180ms;
+  --default-transition-duration: 200ms;
   --default-transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
 
   --breakpoint-xs: 26rem;
@@ -42,6 +41,8 @@
   --color-accent: var(--accent);
   --color-accent-soft: var(--accent-soft);
   --color-accent-fg: var(--accent-fg);
+  --color-accent-button: var(--accent-button);
+  --color-accent-button-hover: var(--accent-button-hover);
   --color-inverse: var(--inverse-bg);
   --color-inverse-fg: var(--inverse-fg);
   --color-inverse-accent: var(--inverse-accent);
@@ -53,16 +54,17 @@
 }
 
 /*
- * Metric-matched fallback for Inter: while the web font loads, Arial is scaled
- * to Inter's proportions so text does not reflow (layout shift) when it swaps in.
+ * Metric-matched fallback for Geist: while the web font loads, Arial is scaled
+ * to Geist's proportions so text does not reflow (layout shift) when it swaps in.
+ * Values measured from the Geist font file in Chrome.
  */
 @font-face {
-  font-family: 'Inter Fallback';
+  font-family: 'Geist Fallback';
   src: local('Arial'), local('Helvetica Neue'), local('Helvetica');
-  ascent-override: 90.44%;
-  descent-override: 22.52%;
+  ascent-override: 97.7%;
+  descent-override: 29.02%;
   line-gap-override: 0%;
-  size-adjust: 107.12%;
+  size-adjust: 103.38%;
 }
 
 @layer base {
@@ -76,7 +78,6 @@
 
   body {
     @apply bg-bg font-sans text-fg antialiased;
-    font-feature-settings: 'cv11', 'ss01', 'ss03';
     min-height: 100dvh;
   }
 
@@ -106,7 +107,17 @@
 @layer components {
   /* Small uppercase mono label used above headings. */
   .eyebrow {
-    @apply font-mono text-[0.72rem] font-medium tracking-[0.14em] text-subtle uppercase;
+    @apply font-mono text-[0.72rem] font-medium tracking-[0.12em] text-subtle uppercase;
+  }
+
+  /* Blue → violet → pink gradient text, reserved for a few highlighted words. */
+  .text-gradient {
+    background-image: var(--gradient-text);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    /* Keeps descenders (g, p, y) inside the painted area. */
+    padding-bottom: 0.08em;
   }
 
   /*

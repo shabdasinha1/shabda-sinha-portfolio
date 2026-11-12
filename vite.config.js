@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/vite';
 import { resolveSiteUrl, seoPlugin } from './build/seo-plugin.js';
 
 /**
- * Adds <link rel="preload"> for the Latin Inter font file in production builds.
+ * Adds <link rel="preload"> for the Latin Geist font file in production builds.
  * Without it the browser only discovers the font after downloading and parsing
  * the CSS; preloading starts the download in parallel, so body text renders in
  * its final font sooner. The file name is hashed, so it is looked up in the bundle.
@@ -19,7 +19,7 @@ function preloadPrimaryFont() {
     },
     transformIndexHtml(_html, ctx) {
       const file = Object.keys(ctx.bundle ?? {}).find((name) =>
-        /inter-latin-wght-normal-[\w-]+\.woff2$/.test(name),
+        /geist-latin-wght-normal-[\w-]+\.woff2$/.test(name),
       );
       if (!file) return [];
       return [

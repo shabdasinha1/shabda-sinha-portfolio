@@ -39,7 +39,7 @@ export function getDocumentTheme() {
 }
 
 // Page background per theme (matches --bg in tokens.css), used for the browser UI colour.
-const THEME_COLORS = { light: '#f7f6f3', dark: '#0c0d10' };
+const THEME_COLORS = { light: '#fbfbfd', dark: '#000000' };
 
 export function applyTheme(theme) {
   const root = document.documentElement;

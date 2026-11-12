@@ -42,7 +42,7 @@ export function Contact() {
                   className="mt-5 text-[clamp(2.25rem,5.4vw,4rem)] leading-[1.03] font-semibold tracking-[-0.04em]"
                 >
                   {title.lead}{' '}
-                  <span className="font-serif font-normal tracking-[-0.01em] text-inverse-accent italic">{title.emphasis}</span>{' '}
+                  <span className="text-inverse-accent">{title.emphasis}</span>{' '}
                   {title.tail}
                 </h2>
               </RevealItem>

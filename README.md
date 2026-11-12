@@ -10,14 +10,14 @@ and is kept in plain data files under [`src/data/`](src/data).
 
 ## Preview
 
-![Portfolio home page, light theme](docs/screenshots/stage5/desktop-1440-light-hero.png)
+![Portfolio home page, light theme](docs/screenshots/current/desktop-1440-light-hero.png)
 
 | Dark theme | Mobile |
 |---|---|
-| ![Projects section, dark theme](docs/screenshots/stage5/desktop-1440-dark-projects.png) | ![Mobile home page](docs/screenshots/stage5/mobile-375-light-hero.png) |
+| ![Projects section, dark theme](docs/screenshots/current/desktop-1440-dark-projects.png) | ![Mobile home page](docs/screenshots/current/mobile-375-light-hero.png) |
 
 More screenshots (desktop, tablet and mobile, both themes) are in
-[`docs/screenshots/stage5`](docs/screenshots/stage5).
+[`docs/screenshots/current`](docs/screenshots/current).
 
 ## Tech stack
 
@@ -26,9 +26,9 @@ More screenshots (desktop, tablet and mobile, both themes) are in
 | UI | [React 19](https://react.dev), JavaScript (no TypeScript) |
 | Build | [Vite 8](https://vite.dev) |
 | Styling | [Tailwind CSS v4](https://tailwindcss.com) with CSS custom properties as design tokens |
-| Animation | [Motion](https://motion.dev) for React (`LazyMotion` + `m` components) |
+| Animation | [Motion](https://motion.dev) for React: scroll-linked effects and spring-smoothed reveals (`LazyMotion` + `m` components) |
 | Icons | [Lucide](https://lucide.dev), plus inline SVG brand marks |
-| Fonts | Self-hosted via Fontsource: Inter, JetBrains Mono, Instrument Serif |
+| Fonts | Self-hosted via Fontsource: [Geist and Geist Mono](https://vercel.com/font) |
 | Quality | ESLint 10 |
 | Hosting | GitHub Pages, deployed by GitHub Actions |
 
@@ -41,8 +41,11 @@ More screenshots (desktop, tablet and mobile, both themes) are in
 - **Responsive:** checked at 320, 375, 430, 768, 1024, 1280, 1440 and 1920 px wide.
 - **Accessible:** semantic landmarks, skip link, full keyboard support, visible focus rings,
   WCAG AA colour contrast in both themes, 44 px touch targets, and an accessible mobile menu.
-- **Respectful motion:** subtle scroll reveals and hover effects; pointer effects are off on
-  touch screens and all movement is disabled when the system asks for reduced motion.
+- **Apple-style motion:** a hero that recedes as you scroll, a portrait showcase that tilts up
+  into place, a statement whose words light up as you read, a timeline that fills with scroll,
+  count-up numbers, blur-in reveals and a scroll-progress line. All scroll effects are
+  spring-smoothed; pointer effects are off on touch screens, and every movement is disabled
+  when the system asks for reduced motion.
 - **Performance:** lightweight Motion bundle, resized portrait, preloaded main font,
   metric-matched fallback font (no layout shift), and long-term caching of built assets.
 - **SEO and sharing:** meta and Open Graph / X card tags, JSON-LD structured data (Person and

@@ -25,6 +25,6 @@ Thumbs.db
 desktop.ini
 
 # QA screenshots from earlier build stages stay local; the final set
-# (docs/screenshots/stage5) is kept as project documentation.
+# (docs/screenshots/current) is kept as project documentation.
 docs/screenshots/*
-!docs/screenshots/stage5/
+!docs/screenshots/current/

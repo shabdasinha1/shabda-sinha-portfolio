@@ -13,7 +13,7 @@ export function EducationEntry({ entry }) {
         <div>
           <p className="font-mono text-xs tracking-wide text-subtle">{period}</p>
           <h3 className="mt-2 text-2xl font-semibold tracking-[-0.03em] text-fg sm:text-3xl">
-            {degree}, <span className="font-serif font-normal tracking-normal italic">{field}</span>
+            {degree}, <span className="text-muted">{field}</span>
           </h3>
           <p className="mt-2 text-muted">
             {institution}, {location}

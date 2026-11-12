@@ -12,6 +12,7 @@ export const profile = {
   initials: 'SS',
   role: 'Full-Stack MERN Developer',
   location: 'Indore, Madhya Pradesh, India',
+  shortLocation: 'Indore, India',
   availability: 'Immediate joiner · Open to relocation',
   email: 'shabdasinha11@gmail.com',
   resume: {
@@ -31,7 +32,7 @@ export const hero = {
   intro:
     "I'm Shabda, a full-stack developer with 2+ years of experience shipping SaaS, e-commerce and analytics products — from secure REST APIs, JWT/RBAC auth and payment integrations to responsive React interfaces.",
   primaryCta: { label: 'View my work', href: '#projects' },
-  secondaryCta: { label: 'Download résumé' },
+  secondaryCta: { label: 'Download resume' },
   coreStack: ['React.js', 'Node.js', 'Express.js', 'MongoDB', 'Redux Toolkit', 'MySQL', 'AWS S3'],
   stats: [
     { value: '2+', label: 'Years building with the MERN stack' },

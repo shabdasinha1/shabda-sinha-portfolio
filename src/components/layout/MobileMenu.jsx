@@ -1,9 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { AnimatePresence, m } from 'motion/react';
-import { Download } from 'lucide-react';
 import { navItems } from '../../data/navigation';
 import { profile } from '../../data/profile';
-import { Button } from '../common/Button';
 import { SocialLinks } from '../common/SocialLinks';
 import { EASE_OUT } from '../../utils/motion';
 import { cn } from '../../utils/cn';
@@ -64,7 +62,7 @@ export function MobileMenu({ id, open, activeId, onClose }) {
             initial="hidden"
             animate="visible"
             exit="exit"
-            className="mx-auto mt-3 w-full origin-top overflow-hidden rounded-2xl border border-line bg-bg-elevated p-2 shadow-float md:hidden"
+            className="mx-auto mt-2 w-full origin-top overflow-hidden rounded-3xl border border-line bg-bg-elevated/95 p-2 shadow-float backdrop-blur-2xl md:hidden"
           >
             <ul className="flex flex-col">
               {navItems.map(({ id: sectionId, label }, index) => {
@@ -84,7 +82,7 @@ export function MobileMenu({ id, open, activeId, onClose }) {
                       <span className="font-mono text-xs text-subtle" aria-hidden="true">
                         {String(index + 1).padStart(2, '0')}
                       </span>
-                      <span className="text-xl font-medium tracking-tight">{label}</span>
+                      <span className="text-2xl font-semibold tracking-[-0.02em]">{label}</span>
                     </a>
                   </m.li>
                 );
@@ -96,15 +94,7 @@ export function MobileMenu({ id, open, activeId, onClose }) {
               className="mt-2 flex items-center justify-between gap-3 border-t border-line px-2 pt-3 pb-1"
             >
               <SocialLinks />
-              <Button
-                href={profile.resume.href}
-                download={profile.resume.fileName}
-                size="sm"
-                variant="secondary"
-                icon={Download}
-              >
-                Résumé
-              </Button>
+              <p className="pr-2 text-xs text-subtle">{profile.shortLocation}</p>
             </m.div>
           </m.nav>
         </>

@@ -3,79 +3,89 @@
  * Components never use raw colour values; they use the Tailwind utilities
  * mapped from these variables in index.css (e.g. bg-surface, text-muted).
  *
- * Palette idea: warm paper + ink in light mode, cool ink + soft paper in dark
- * mode, with one restrained amber accent used sparingly for emphasis.
- * Text colours are checked against WCAG AA (4.5:1) on bg, surface and muted.
+ * Palette: an Apple-inspired system. Near-white paper and graphite ink in light
+ * mode, true black in dark mode, one clear blue accent for links and actions,
+ * and a blue → violet → pink gradient reserved for a few highlighted words.
+ * Text colours are checked against WCAG AA (4.5:1) on bg, surface and muted;
+ * every gradient stop is ≥ 3:1 (large display text only).
  */
 
 :root {
   /* Motion durations for CSS transitions. The easing curve (--ease-smooth) is
      declared in index.css @theme so Tailwind exposes it as `ease-smooth`. */
-  --duration-fast: 180ms;
-  --duration-base: 320ms;
+  --duration-fast: 200ms;
+  --duration-base: 360ms;
 }
 
 :root,
 [data-theme='light'] {
-  --bg: #f7f6f3;
-  --bg-elevated: #fbfaf8;
+  --bg: #fbfbfd;
+  --bg-elevated: #ffffff;
   --surface: #ffffff;
-  --surface-muted: #f0eee9;
-  --fg: #141416;
-  --fg-muted: #57575f;
-  --fg-subtle: #68686f; /* ≥4.5:1 on every light surface */
-  --border: rgb(20 20 22 / 0.09);
-  --border-strong: rgb(20 20 22 / 0.16);
+  --surface-muted: #f5f5f7;
+  --fg: #1d1d1f;
+  --fg-muted: #424245;
+  --fg-subtle: #6e6e73;
+  --border: rgb(0 0 0 / 0.08);
+  --border-strong: rgb(0 0 0 / 0.14);
 
-  --accent: #a0561a; /* ≥4.5:1 on every light surface */
-  --accent-soft: rgb(160 86 26 / 0.1);
+  --accent: #0066cc;
+  --accent-soft: rgb(0 113 227 / 0.1);
   --accent-fg: #ffffff;
+  --accent-button: #0071e3;
+  --accent-button-hover: #0077ed;
 
-  --inverse-bg: #141416;
-  --inverse-fg: #f7f6f3;
-  --inverse-accent: #e9b26a; /* accent tuned for the dark inverse panel */
+  --gradient-text: linear-gradient(100deg, #0071e3 0%, #7c3aed 52%, #db2777 100%);
 
-  --success: #2f8f5b;
-  --ring: rgb(160 86 26 / 0.6);
+  --inverse-bg: #1d1d1f;
+  --inverse-fg: #f5f5f7;
+  --inverse-accent: #2997ff; /* accent tuned for the dark inverse panel */
 
-  --nav-bg: rgb(251 250 248 / 0.72);
-  --grid-line: rgb(20 20 22 / 0.05);
-  --glow-a: rgb(222 151 77 / 0.2);
-  --glow-b: rgb(92 112 168 / 0.14);
+  --success: #1d7d46;
+  --ring: rgb(0 113 227 / 0.6);
 
-  --shadow-sm: 0 1px 2px rgb(20 20 22 / 0.05);
-  --shadow-md: 0 1px 2px rgb(20 20 22 / 0.04), 0 8px 24px -8px rgb(20 20 22 / 0.12);
-  --shadow-lg: 0 2px 4px rgb(20 20 22 / 0.04), 0 24px 56px -16px rgb(20 20 22 / 0.2);
+  --nav-bg: rgb(251 251 253 / 0.72);
+  --grid-line: rgb(0 0 0 / 0.04);
+  --glow-a: rgb(0 113 227 / 0.14);
+  --glow-b: rgb(219 39 119 / 0.1);
+
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.04);
+  --shadow-md: 0 2px 6px rgb(0 0 0 / 0.04), 0 12px 32px -12px rgb(0 0 0 / 0.12);
+  --shadow-lg: 0 4px 12px rgb(0 0 0 / 0.04), 0 30px 60px -20px rgb(0 0 0 / 0.22);
 }
 
 [data-theme='dark'] {
-  --bg: #0c0d10;
-  --bg-elevated: #111216;
-  --surface: #15161b;
-  --surface-muted: #1b1c22;
-  --fg: #ededef;
-  --fg-muted: #a1a1aa;
-  --fg-subtle: #8a8a93; /* ≥4.5:1 on every dark surface */
-  --border: rgb(255 255 255 / 0.08);
-  --border-strong: rgb(255 255 255 / 0.15);
+  --bg: #000000;
+  --bg-elevated: #0a0a0c;
+  --surface: #141416;
+  --surface-muted: #1c1c1e;
+  --fg: #f5f5f7;
+  --fg-muted: #a1a1a6;
+  --fg-subtle: #86868b;
+  --border: rgb(255 255 255 / 0.1);
+  --border-strong: rgb(255 255 255 / 0.18);
 
-  --accent: #e9b26a;
-  --accent-soft: rgb(233 178 106 / 0.12);
-  --accent-fg: #141416;
+  --accent: #2997ff;
+  --accent-soft: rgb(41 151 255 / 0.14);
+  --accent-fg: #ffffff;
+  --accent-button: #0071e3;
+  --accent-button-hover: #0077ed;
 
-  --inverse-bg: #ededef;
-  --inverse-fg: #0c0d10;
-  --inverse-accent: #9a4f12; /* accent tuned for the light inverse panel */
+  --gradient-text: linear-gradient(100deg, #2997ff 0%, #a78bfa 52%, #f472b6 100%);
 
-  --success: #5cc48c;
-  --ring: rgb(233 178 106 / 0.6);
+  --inverse-bg: #f5f5f7;
+  --inverse-fg: #1d1d1f;
+  --inverse-accent: #0066cc; /* accent tuned for the light inverse panel */
 
-  --nav-bg: rgb(17 18 22 / 0.7);
-  --grid-line: rgb(255 255 255 / 0.04);
-  --glow-a: rgb(233 178 106 / 0.12);
-  --glow-b: rgb(98 120 196 / 0.14);
+  --success: #30d158;
+  --ring: rgb(41 151 255 / 0.65);
 
-  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.4);
-  --shadow-md: 0 1px 2px rgb(0 0 0 / 0.3), 0 8px 24px -8px rgb(0 0 0 / 0.5);
-  --shadow-lg: 0 2px 4px rgb(0 0 0 / 0.3), 0 24px 56px -16px rgb(0 0 0 / 0.65);
+  --nav-bg: rgb(22 22 23 / 0.72);
+  --grid-line: rgb(255 255 255 / 0.05);
+  --glow-a: rgb(41 151 255 / 0.18);
+  --glow-b: rgb(167 139 250 / 0.14);
+
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.5);
+  --shadow-md: 0 2px 6px rgb(0 0 0 / 0.4), 0 12px 32px -12px rgb(0 0 0 / 0.7);
+  --shadow-lg: 0 4px 12px rgb(0 0 0 / 0.4), 0 30px 60px -20px rgb(0 0 0 / 0.85);
 }

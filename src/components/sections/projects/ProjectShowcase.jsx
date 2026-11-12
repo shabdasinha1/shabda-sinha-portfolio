@@ -1,15 +1,14 @@
+import { useRef } from 'react';
+import { m, useScroll, useSpring, useTransform } from 'motion/react';
 import { Check } from 'lucide-react';
-import { Reveal } from '../../common/Reveal';
 import { TechList } from '../../common/TechList';
 import { useFinePointer } from '../../../hooks/useFinePointer';
+import { useMotionEnabled } from '../../../hooks/useMotionEnabled';
 import { cn } from '../../../utils/cn';
+import { SCROLL_SPRING } from '../../../utils/motion';
 import { ArchitectureDiagram } from './ArchitectureDiagram';
 import { ProjectLinks } from './ProjectLinks';
 
-/**
- * A full-width project showcase: the story on one side, a system diagram
- * on the other. `reversed` alternates the layout on large screens.
- */
 /**
  * Moves the card's soft highlight to the pointer by updating two CSS variables
  * directly on the element: no React state, so no re-renders while hovering.
@@ -21,13 +20,27 @@ function trackPointer(event) {
   card.style.setProperty('--spot-y', `${event.clientY - rect.top}px`);
 }
 
+/**
+ * A full-width project showcase: the story on one side, a system diagram
+ * on the other. `reversed` alternates the layout on large screens.
+ * Apple-style entrance: as the card scrolls into view it rises, scales up from
+ * 94% and comes into full opacity, linked to scroll position (spring-smoothed).
+ */
 export function ProjectShowcase({ project, number, reversed }) {
   const titleId = `project-${project.id}`;
   const finePointer = useFinePointer();
+  const enabled = useMotionEnabled();
+  const ref = useRef(null);
+
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'start 0.55'] });
+  const progress = useSpring(scrollYProgress, SCROLL_SPRING);
+  const scale = useTransform(progress, [0, 1], [0.94, 1]);
+  const opacity = useTransform(progress, [0, 1], [0.35, 1]);
+  const y = useTransform(progress, [0, 1], [60, 0]);
 
   return (
-    <Reveal
-      as="article"
+    <m.div ref={ref} style={enabled ? { scale, opacity, y } : undefined}>
+    <article
       aria-labelledby={titleId}
       onPointerMove={finePointer ? trackPointer : undefined}
       className="group relative isolate overflow-hidden rounded-[2rem] border border-line bg-surface shadow-card transition-[border-color,box-shadow] duration-(--duration-base) ease-smooth hover:border-line-strong hover:shadow-float"
@@ -84,6 +97,7 @@ export function ProjectShowcase({ project, number, reversed }) {
           <ArchitectureDiagram architecture={project.architecture} projectName={project.name} />
         </div>
       </div>
-    </Reveal>
+    </article>
+    </m.div>
   );
 }

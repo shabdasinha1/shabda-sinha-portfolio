@@ -7,10 +7,11 @@ const base =
   'hover:-translate-y-px active:translate-y-0 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50';
 
 const variants = {
+  // Apple-style blue pill for the main action (white on #0071e3 is 4.6:1).
   primary:
-    'bg-inverse text-inverse-fg shadow-card hover:shadow-float hover:bg-inverse/90',
+    'bg-accent-button text-white shadow-card hover:bg-accent-button-hover hover:shadow-float',
   secondary:
-    'border border-line-strong bg-surface/60 text-fg shadow-soft hover:border-fg/25 hover:bg-surface',
+    'border border-line-strong bg-surface/70 text-fg shadow-soft backdrop-blur-sm hover:border-fg/25 hover:bg-surface',
   ghost: 'text-muted hover:bg-surface-muted hover:text-fg',
 };
 

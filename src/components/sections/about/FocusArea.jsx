@@ -1,18 +1,13 @@
 import { Icon } from '../../icons/Icon';
 
-/** One focus area: icon, title and a short description under a hairline rule. */
+/** One focus area as an Apple-style tile: icon, title and a short description. */
 export function FocusArea({ icon, title, text }) {
   return (
-    <div className="group relative border-t border-line pt-6">
-      {/* Accent rule grows across the top border on hover. */}
-      <span
-        aria-hidden="true"
-        className="absolute -top-px left-0 h-px w-10 bg-accent transition-[width] duration-500 ease-smooth group-hover:w-full"
-      />
-      <span className="inline-flex size-10 items-center justify-center rounded-xl border border-line bg-surface text-accent shadow-soft">
-        <Icon name={icon} className="size-[18px]" />
+    <div className="group h-full rounded-3xl border border-line bg-surface p-7 shadow-soft transition-[translate,box-shadow,border-color] duration-(--duration-base) ease-smooth hover:-translate-y-1 hover:border-line-strong hover:shadow-card">
+      <span className="inline-flex size-11 items-center justify-center rounded-2xl bg-accent-soft text-accent transition-transform duration-(--duration-base) ease-smooth group-hover:scale-110">
+        <Icon name={icon} className="size-5" />
       </span>
-      <h3 className="mt-5 text-lg font-semibold tracking-tight text-fg">{title}</h3>
+      <h3 className="mt-6 text-xl font-semibold tracking-[-0.02em] text-fg">{title}</h3>
       <p className="mt-2 leading-relaxed text-muted">{text}</p>
     </div>
   );
