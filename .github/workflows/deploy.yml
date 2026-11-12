@@ -1,0 +1,70 @@
+# Builds the portfolio and publishes it to GitHub Pages.
+# Repository → Settings → Pages → Source must be "GitHub Actions".
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Least privilege: the build job only reads the repository. The deploy job
+# alone gets the Pages and OIDC token permissions it needs.
+permissions:
+  contents: read
+
+# One deployment at a time. A newer push queues behind a running deployment
+# instead of cancelling it, so a half-finished deploy is never interrupted.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Lint and build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .node-version
+          cache: npm
+
+      - name: Read GitHub Pages configuration
+        id: pages
+        uses: actions/configure-pages@v6
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build
+        run: npm run build
+        env:
+          # The real Pages URL (e.g. https://<owner>.github.io/<repo>), provided by GitHub.
+          # Sets the base path and the canonical, Open Graph and sitemap URLs.
+          VITE_SITE_URL: ${{ steps.pages.outputs.base_url }}
+
+      - name: Upload site artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: dist
+
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
