@@ -2,7 +2,7 @@
 
 Personal portfolio of **Shabda Kumar Sinha**, Full-Stack MERN Developer based in Indore, India.
 A fast, accessible single-page site built with React, Vite, JavaScript, Tailwind CSS and Motion,
-designed to be hosted as static files on Cloudflare Pages. There is no backend.
+deployed as static files to GitHub Pages with GitHub Actions. There is no backend.
 
 All professional content comes from my résumé
 ([`public/Shabda_Kumar_Sinha_Resume.pdf`](public/Shabda_Kumar_Sinha_Resume.pdf))
@@ -30,7 +30,7 @@ More screenshots (desktop, tablet and mobile, both themes) are in
 | Icons | [Lucide](https://lucide.dev), plus inline SVG brand marks |
 | Fonts | Self-hosted via Fontsource: Inter, JetBrains Mono, Instrument Serif |
 | Quality | ESLint 10 |
-| Hosting | Static files on Cloudflare Pages |
+| Hosting | GitHub Pages, deployed by GitHub Actions |
 
 ## Key features
 
@@ -47,18 +47,19 @@ More screenshots (desktop, tablet and mobile, both themes) are in
   metric-matched fallback font (no layout shift), and long-term caching of built assets.
 - **SEO and sharing:** meta and Open Graph / X card tags, JSON-LD structured data (Person and
   WebSite), a 1200×630 social preview image, `robots.txt`, `sitemap.xml` and app icons.
-- **Production hardening:** strict Content-Security-Policy and security headers, a real 404
-  page, and `noindex` on preview deployments.
+- **Production hardening:** strict hash-based Content-Security-Policy, referrer policy, and a
+  real 404 page.
 
 ## Project structure
 
 ```
 .
 ├── build/
-│   └── seo-plugin.js      Build-time SEO: meta tags, JSON-LD, robots.txt, sitemap.xml, _headers
+│   └── seo-plugin.js      Build-time SEO: meta tags, CSP, JSON-LD, 404.html, robots.txt, sitemap.xml
 ├── design/                HTML sources for the social preview image and app icons
+├── .github/workflows/     deploy.yml: lint, build and publish to GitHub Pages
 ├── docs/screenshots/      Final screenshots used in this README
-├── public/                Static files copied as-is: résumé, icons, og-image, manifest, 404 page
+├── public/                Static files copied as-is: résumé, icons, og-image, manifest, 404 styles
 ├── src/
 │   ├── assets/images/     Portrait
 │   ├── components/
@@ -76,7 +77,7 @@ More screenshots (desktop, tablet and mobile, both themes) are in
 ├── index.html
 ├── vite.config.js
 ├── .env.example           Template for VITE_SITE_URL
-└── .node-version          Node.js version used locally and on Cloudflare Pages
+└── .node-version          Node.js version used locally and by the deploy workflow
 ```
 
 ## Getting started
@@ -108,72 +109,93 @@ npm run build
 npm run preview
 ```
 
-`dist/` contains everything needed for static hosting, including the generated
-`robots.txt`, `_headers` (Cloudflare Pages headers) and, when the site URL is set,
-`sitemap.xml`.
+`dist/` contains everything needed for static hosting, including the generated `404.html`,
+`robots.txt` and, when the site URL is set, `sitemap.xml`.
+
+To reproduce the exact GitHub Pages build locally (served under the same sub-path):
+
+```bash
+VITE_SITE_URL=https://shabdasinha1.github.io/shabda-sinha-portfolio npm run build
+VITE_SITE_URL=https://shabdasinha1.github.io/shabda-sinha-portfolio npm run preview
+```
+
+Then open http://localhost:4173/shabda-sinha-portfolio/.
 
 ## Environment variables
 
 | Variable | Required | Purpose |
 |---|---|---|
-| `VITE_SITE_URL` | For production | The public address of the site, e.g. `https://example.com` (no trailing slash). Read at **build time**. |
+| `VITE_SITE_URL` | Set by the deploy workflow | The public address of the site, without a trailing slash. Read at **build time**. |
 
-Some tags need the site's full address: the canonical URL, `og:url`, `og:image`,
-`twitter:image` and `sitemap.xml`. The address is never hard-coded.
+`VITE_SITE_URL` controls two things:
 
-- **Not set:** the build prints a warning and leaves those tags and the sitemap out.
-  Everything else is still generated. Social previews show text without the image.
-- **Set:** all of the above are added automatically.
+- **The base path** the site is served from, taken from the URL's path. A GitHub Pages
+  project site lives under `/<repository>/`, so every CSS, JavaScript, image, font and icon
+  URL is built with that prefix.
+- **Absolute URLs** for the canonical link, `og:url`, `og:image`, `twitter:image`,
+  structured data and `sitemap.xml`.
 
-For a local build, copy [`.env.example`](.env.example) to `.env` and fill it in.
-`.env` files are git-ignored.
+You normally never set it by hand: the workflow reads the real Pages URL from GitHub
+(`actions/configure-pages`) and passes it to the build. Without it, a build uses base `/` and
+leaves the URL-dependent tags and the sitemap out (with a warning), which is what
+`npm run dev` and plain local builds use. See [`.env.example`](.env.example).
 
-## Deploying to Cloudflare Pages
+## Deployment (GitHub Pages)
 
-1. In the Cloudflare dashboard, open **Workers & Pages → Create → Pages → Connect to Git**
-   and select this repository.
-2. Build settings:
-   - Framework preset: **None** (or Vite)
-   - Build command: `npm run build`
-   - Build output directory: `dist`
-   - The Node.js version is read from `.node-version`.
-3. Deploy once. The site is then available at `https://<project>.pages.dev`.
-4. Set the site address:
-   - **Using the free address:** set `VITE_SITE_URL` to `https://<project>.pages.dev`.
-   - **Using a custom domain:** add it under **Custom domains**, wait until it is active,
-     then set `VITE_SITE_URL` to `https://<your-domain>`.
+Every push to `main` deploys automatically through
+[`.github/workflows/deploy.yml`](.github/workflows/deploy.yml). It can also be started by hand
+from the **Actions** tab (**Deploy to GitHub Pages → Run workflow**).
 
-   Add the variable under **Settings → Environment variables → Production** only
-   (leave Preview empty), then **redeploy** so the build picks it up.
-5. After deploying, check the result with:
-   - [Google Rich Results Test](https://search.google.com/test/rich-results) (structured data)
-   - [LinkedIn Post Inspector](https://www.linkedin.com/post-inspector/) and
-     [Facebook Sharing Debugger](https://developers.facebook.com/tools/debug/) (social previews)
-   - Google Search Console: add the site and submit `/sitemap.xml`.
-
-### What the build generates for Cloudflare
-
-| File | Purpose |
+| Job | Steps |
 |---|---|
-| `dist/_headers` | Security headers for every page, one-year caching for `/assets/*`, and `noindex` for preview deployments (`<hash>.<project>.pages.dev`). With a custom domain it also marks the duplicate `<project>.pages.dev` address `noindex`. |
-| `dist/robots.txt` | Allows all crawlers; points to the sitemap when the site URL is set. |
-| `dist/sitemap.xml` | Generated only when `VITE_SITE_URL` is set. |
-| `public/404.html` | A real 404 page. Without it, Pages returns the homepage with status 200 for every unknown URL. |
+| **Lint and build** | checkout → Node.js from `.node-version` (npm cache) → read Pages configuration → `npm ci` → `npm run lint` → `npm run build` → upload `dist/` as the Pages artifact |
+| **Deploy** | publish the artifact with `actions/deploy-pages` (runs only if the build job succeeds) |
 
-### Security headers
+- **Permissions:** the build job can only read the repository; only the deploy job gets
+  `pages: write` and `id-token: write`.
+- **Concurrency:** deployments run one at a time; a newer push waits instead of cancelling a
+  deployment in progress.
+- **Build output:** `dist/` is never committed; it is built fresh in CI.
 
-Defined in [`build/seo-plugin.js`](build/seo-plugin.js) (`headersFile()`).
+### One-time repository setting
 
-- **Content-Security-Policy** allows only the site's own files. The single inline script
-  (theme setup in `index.html`) is allowed by its exact SHA-256 hash, recalculated on every
-  build. Fonts are never inlined as `data:` URLs, so `font-src 'self'` stays strict.
-  **If you add third-party scripts later** (for example Cloudflare Web Analytics), add their
-  domains to `script-src` / `connect-src` there, or they will be blocked.
-- **X-Frame-Options: DENY** and `frame-ancestors 'none'` stop other sites from framing the page.
-- **Strict-Transport-Security**: one year, without `includeSubDomains` or `preload`.
-- **Permissions-Policy** disables camera, microphone, location, payment and USB.
-- **Referrer-Policy** `strict-origin-when-cross-origin`, **X-Content-Type-Options** `nosniff`,
-  **Cross-Origin-Opener-Policy** `same-origin`.
+**Repository → Settings → Pages → Build and deployment → Source: GitHub Actions.**
+(No branch needs to be selected.)
+
+### Routing and 404s
+
+The site is a single page whose navigation uses `#section` anchors, so no SPA routing fallback
+is needed: the homepage and links such as `…/#projects` load directly (the app scrolls to the
+section once it has rendered). Any other path returns GitHub Pages' 404 status with the
+site's own `404.html`.
+
+### Security on GitHub Pages
+
+GitHub Pages does not allow custom HTTP response headers, so the policies are delivered in the
+HTML instead (see [`build/seo-plugin.js`](build/seo-plugin.js)):
+
+- **Content-Security-Policy** (`<meta>`): only the site's own files may load. The single inline
+  script (theme setup in `index.html`) is allowed by its exact SHA-256 hash, recalculated on
+  every build. Fonts are never inlined as `data:` URLs, so `font-src 'self'` stays strict.
+  **If you add third-party scripts later**, add their domains to `script-src` / `connect-src`
+  there, or they will be blocked.
+- **Referrer-Policy** (`<meta>`): `strict-origin-when-cross-origin`.
+- **HTTPS** is enforced by GitHub Pages.
+- Header-only protections (`X-Frame-Options` / `frame-ancestors`, `Permissions-Policy`,
+  `X-Content-Type-Options`) cannot be set on GitHub Pages; browsers ignore them in `<meta>`.
+
+### Search engines
+
+- `sitemap.xml` is published with the site; submit it in Google Search Console after adding
+  the site as a property.
+- Crawlers only read `robots.txt` at the root of a host. For a project site that is
+  `https://<owner>.github.io/robots.txt`, outside this repository, so the generated
+  `robots.txt` takes effect only if the site later moves to a custom domain. Without one,
+  crawlers treat the site as allowed, which is the intended behaviour.
+- After deploying, check the result with the
+  [Google Rich Results Test](https://search.google.com/test/rich-results) (structured data) and
+  [LinkedIn Post Inspector](https://www.linkedin.com/post-inspector/) /
+  [Facebook Sharing Debugger](https://developers.facebook.com/tools/debug/) (social previews).
 
 ## Editing content
 
