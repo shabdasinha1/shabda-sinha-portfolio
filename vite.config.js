@@ -1,7 +1,7 @@
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
-import { seoPlugin } from './build/seo-plugin.js';
+import { resolveSiteUrl, seoPlugin } from './build/seo-plugin.js';
 
 /**
  * Adds <link rel="preload"> for the Latin Inter font file in production builds.
@@ -33,14 +33,29 @@ function preloadPrimaryFont() {
   };
 }
 
+/**
+ * The public base path comes from the site URL, so there is a single setting:
+ *   https://shabdasinha1.github.io/shabda-sinha-portfolio → /shabda-sinha-portfolio/
+ *   https://example.com                                    → /
+ * In CI the URL is provided by GitHub (actions/configure-pages), never typed by hand.
+ */
+function basePathFrom(siteUrl) {
+  if (!siteUrl) return '/';
+  const { pathname } = new URL(siteUrl);
+  return pathname.endsWith('/') ? pathname : `${pathname}/`;
+}
+
 // https://vite.dev/config/
-export default defineConfig(({ mode }) => {
-  // Reads VITE_SITE_URL from .env files or the build environment
-  // (e.g. Cloudflare Pages → Settings → Environment variables).
+export default defineConfig(({ command, mode, isPreview }) => {
+  // Reads VITE_SITE_URL from .env files or the environment (set by the GitHub Pages workflow).
   const env = loadEnv(mode, process.cwd(), 'VITE_');
+  const siteUrl = resolveSiteUrl(env.VITE_SITE_URL);
 
   return {
-    plugins: [react(), tailwindcss(), preloadPrimaryFont(), seoPlugin({ siteUrl: env.VITE_SITE_URL })],
+    // The dev server always runs at "/" so local development is unaffected;
+    // `vite build` and `vite preview` use the deployed base path.
+    base: command === 'build' || isPreview ? basePathFrom(siteUrl) : '/',
+    plugins: [react(), tailwindcss(), preloadPrimaryFont(), seoPlugin({ siteUrl })],
     build: {
       // Never inline fonts as data: URLs. Keeps them as cacheable files and lets
       // the Content-Security-Policy stay strict (font-src 'self', no data:).
