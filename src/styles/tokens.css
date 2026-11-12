@@ -1,0 +1,81 @@
+/*
+ * Design tokens — the single source of truth for colour, depth and radius.
+ * Components never use raw colour values; they use the Tailwind utilities
+ * mapped from these variables in index.css (e.g. bg-surface, text-muted).
+ *
+ * Palette idea: warm paper + ink in light mode, cool ink + soft paper in dark
+ * mode, with one restrained amber accent used sparingly for emphasis.
+ * Text colours are checked against WCAG AA (4.5:1) on bg, surface and muted.
+ */
+
+:root {
+  /* Motion durations for CSS transitions. The easing curve (--ease-smooth) is
+     declared in index.css @theme so Tailwind exposes it as `ease-smooth`. */
+  --duration-fast: 180ms;
+  --duration-base: 320ms;
+}
+
+:root,
+[data-theme='light'] {
+  --bg: #f7f6f3;
+  --bg-elevated: #fbfaf8;
+  --surface: #ffffff;
+  --surface-muted: #f0eee9;
+  --fg: #141416;
+  --fg-muted: #57575f;
+  --fg-subtle: #68686f; /* ≥4.5:1 on every light surface */
+  --border: rgb(20 20 22 / 0.09);
+  --border-strong: rgb(20 20 22 / 0.16);
+
+  --accent: #a0561a; /* ≥4.5:1 on every light surface */
+  --accent-soft: rgb(160 86 26 / 0.1);
+  --accent-fg: #ffffff;
+
+  --inverse-bg: #141416;
+  --inverse-fg: #f7f6f3;
+  --inverse-accent: #e9b26a; /* accent tuned for the dark inverse panel */
+
+  --success: #2f8f5b;
+  --ring: rgb(160 86 26 / 0.6);
+
+  --nav-bg: rgb(251 250 248 / 0.72);
+  --grid-line: rgb(20 20 22 / 0.05);
+  --glow-a: rgb(222 151 77 / 0.2);
+  --glow-b: rgb(92 112 168 / 0.14);
+
+  --shadow-sm: 0 1px 2px rgb(20 20 22 / 0.05);
+  --shadow-md: 0 1px 2px rgb(20 20 22 / 0.04), 0 8px 24px -8px rgb(20 20 22 / 0.12);
+  --shadow-lg: 0 2px 4px rgb(20 20 22 / 0.04), 0 24px 56px -16px rgb(20 20 22 / 0.2);
+}
+
+[data-theme='dark'] {
+  --bg: #0c0d10;
+  --bg-elevated: #111216;
+  --surface: #15161b;
+  --surface-muted: #1b1c22;
+  --fg: #ededef;
+  --fg-muted: #a1a1aa;
+  --fg-subtle: #8a8a93; /* ≥4.5:1 on every dark surface */
+  --border: rgb(255 255 255 / 0.08);
+  --border-strong: rgb(255 255 255 / 0.15);
+
+  --accent: #e9b26a;
+  --accent-soft: rgb(233 178 106 / 0.12);
+  --accent-fg: #141416;
+
+  --inverse-bg: #ededef;
+  --inverse-fg: #0c0d10;
+  --inverse-accent: #9a4f12; /* accent tuned for the light inverse panel */
+
+  --success: #5cc48c;
+  --ring: rgb(233 178 106 / 0.6);
+
+  --nav-bg: rgb(17 18 22 / 0.7);
+  --grid-line: rgb(255 255 255 / 0.04);
+  --glow-a: rgb(233 178 106 / 0.12);
+  --glow-b: rgb(98 120 196 / 0.14);
+
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.4);
+  --shadow-md: 0 1px 2px rgb(0 0 0 / 0.3), 0 8px 24px -8px rgb(0 0 0 / 0.5);
+  --shadow-lg: 0 2px 4px rgb(0 0 0 / 0.3), 0 24px 56px -16px rgb(0 0 0 / 0.65);
+}

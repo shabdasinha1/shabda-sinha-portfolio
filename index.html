@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!--
+      The title, description, Open Graph / X cards and JSON-LD structured data are
+      injected at build time from src/data/seo.js by build/seo-plugin.js.
+    -->
+    <title>Shabda Kumar Sinha</title>
+    <meta name="color-scheme" content="light dark" />
+    <!-- Browser UI colour; updated to match the active theme by the script below and applyTheme(). -->
+    <meta name="theme-color" content="#0c0d10" />
+
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!--
+      Theme bootstrap: runs before first paint so the correct theme is applied
+      immediately (no flash). Keep the storage key and theme colours in sync with
+      src/utils/theme.js. Its SHA-256 hash is added to the Content-Security-Policy
+      automatically at build time, so editing it needs no manual CSP change.
+    -->
+    <script>
+      (function () {
+        var theme;
+        try {
+          theme = localStorage.getItem('portfolio-theme');
+        } catch (e) {}
+        if (theme !== 'light' && theme !== 'dark') {
+          theme = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+        }
+        var root = document.documentElement;
+        root.dataset.theme = theme;
+        root.style.colorScheme = theme;
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.content = theme === 'light' ? '#f7f6f3' : '#0c0d10';
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <noscript>
+      Shabda Kumar Sinha, Full-Stack MERN Developer. This portfolio needs JavaScript to display. Contact:
+      <a href="mailto:shabdasinha11@gmail.com">shabdasinha11@gmail.com</a>
+    </noscript>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

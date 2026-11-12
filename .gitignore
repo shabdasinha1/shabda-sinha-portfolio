@@ -1,0 +1,30 @@
+# Dependencies and build output (Cloudflare Pages builds dist/ itself)
+node_modules
+dist
+dist-ssr
+*.local
+
+# Local environment values (VITE_SITE_URL etc.); the template is committed.
+.env
+.env.*
+!.env.example
+
+# Logs and test artifacts
+*.log
+coverage
+test-results
+playwright-report
+
+# Editor, OS and local tool settings
+.vscode/*
+!.vscode/extensions.json
+.idea
+.claude/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# QA screenshots from earlier build stages stay local; the final set
+# (docs/screenshots/stage5) is kept as project documentation.
+docs/screenshots/*
+!docs/screenshots/stage5/

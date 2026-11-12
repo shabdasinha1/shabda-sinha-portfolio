@@ -1,0 +1,80 @@
+/* Styles for 404.html. Colours mirror src/styles/tokens.css; follows the OS theme. */
+:root {
+  --bg: #f7f6f3;
+  --fg: #141416;
+  --muted: #57575f;
+  --accent: #a0561a;
+  --line: rgb(20 20 22 / 0.16);
+  font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0c0d10;
+    --fg: #ededef;
+    --muted: #a1a1aa;
+    --accent: #e9b26a;
+    --line: rgb(255 255 255 / 0.15);
+  }
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+body {
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: var(--bg);
+  color: var(--fg);
+}
+
+main {
+  max-width: 32rem;
+  text-align: center;
+}
+
+.code {
+  font-family: ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+}
+
+h1 {
+  margin-top: 1rem;
+  font-size: clamp(1.75rem, 6vw, 2.5rem);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+.text {
+  margin-top: 0.75rem;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-top: 2rem;
+  padding: 0 1.25rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--fg);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.button:hover {
+  border-color: var(--fg);
+}
+
+.button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}

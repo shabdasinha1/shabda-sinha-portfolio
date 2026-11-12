@@ -1,0 +1,94 @@
+<!doctype html>
+<!--
+  Source for public/og-image.jpg (1200×630 social preview for LinkedIn, WhatsApp,
+  Facebook and X). Uses the site's own fonts, colours and portrait.
+  Regenerate: see README.md → "Regenerating brand images".
+-->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>OG image</title>
+    <style>
+      @font-face { font-family: 'Inter'; src: url('../node_modules/@fontsource-variable/inter/files/inter-latin-wght-normal.woff2') format('woff2'); font-weight: 100 900; }
+      @font-face { font-family: 'Instrument Serif'; font-style: italic; src: url('../node_modules/@fontsource/instrument-serif/files/instrument-serif-latin-400-italic.woff2') format('woff2'); }
+      @font-face { font-family: 'JetBrains Mono'; src: url('../node_modules/@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2') format('woff2'); font-weight: 100 800; }
+
+      * { box-sizing: border-box; margin: 0; }
+      html, body { width: 1200px; height: 630px; }
+      body {
+        position: relative;
+        overflow: hidden;
+        background: #0c0d10;
+        color: #ededef;
+        font-family: 'Inter', sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      .grid {
+        position: absolute; inset: 0;
+        background-image:
+          linear-gradient(to right, rgb(255 255 255 / 0.045) 1px, transparent 1px),
+          linear-gradient(to bottom, rgb(255 255 255 / 0.045) 1px, transparent 1px);
+        background-size: 56px 56px;
+        mask-image: radial-gradient(ellipse 80% 90% at 30% 20%, black 30%, transparent 80%);
+      }
+      .glow-a { position: absolute; width: 760px; height: 760px; left: -220px; top: -380px; border-radius: 50%; background: radial-gradient(circle, rgb(233 178 106 / 0.16), transparent 65%); }
+      .glow-b { position: absolute; width: 640px; height: 640px; right: -160px; bottom: -340px; border-radius: 50%; background: radial-gradient(circle, rgb(98 120 196 / 0.18), transparent 65%); }
+
+      .content { position: absolute; left: 80px; top: 72px; bottom: 72px; width: 640px; display: flex; flex-direction: column; }
+      .brand { display: flex; align-items: center; gap: 14px; }
+      .mark { width: 52px; height: 52px; border-radius: 14px; background: #ededef; color: #0c0d10; display: grid; place-items: center; font: italic 34px/1 'Instrument Serif', serif; }
+      .eyebrow { font: 500 17px/1 'JetBrains Mono', monospace; letter-spacing: 0.14em; text-transform: uppercase; color: #8a8a93; }
+      .eyebrow b { color: #e9b26a; font-weight: 500; }
+
+      h1 { margin-top: 46px; font-size: 72px; line-height: 1; font-weight: 650; letter-spacing: -0.045em; }
+      .role { margin-top: 20px; font-size: 38px; line-height: 1.1; font-weight: 600; letter-spacing: -0.03em; color: #ededef; }
+      .role em { font: italic 400 44px/1 'Instrument Serif', serif; letter-spacing: -0.01em; color: #e9b26a; }
+      .summary { margin-top: 18px; font-size: 21px; line-height: 1.45; color: #a1a1aa; max-width: 630px; }
+
+      .chips { margin-top: auto; display: flex; flex-wrap: wrap; gap: 10px; }
+      .chip { border: 1px solid rgb(255 255 255 / 0.14); background: rgb(255 255 255 / 0.04); border-radius: 999px; padding: 9px 16px; font: 500 17px/1 'JetBrains Mono', monospace; color: #c9c9cf; }
+
+      .portrait { position: absolute; right: 80px; top: 72px; width: 360px; height: 486px; }
+      .portrait .offset { position: absolute; inset: 0; transform: translate(14px, 14px); border: 1px solid rgb(255 255 255 / 0.16); border-radius: 32px; }
+      .portrait .frame { position: absolute; inset: 0; overflow: hidden; border-radius: 32px; border: 1px solid rgb(255 255 255 / 0.1); box-shadow: 0 30px 60px -20px rgb(0 0 0 / 0.7); }
+      .portrait img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 20%; display: block; }
+      .portrait .shade { position: absolute; inset: auto 0 0 0; height: 45%; background: linear-gradient(to top, rgb(0 0 0 / 0.65), transparent); }
+      .portrait .caption { position: absolute; left: 16px; right: 16px; bottom: 16px; border-radius: 20px; padding: 16px 18px; background: rgb(0 0 0 / 0.4); border: 1px solid rgb(255 255 255 / 0.14); backdrop-filter: blur(10px); }
+      .caption .k { font: 500 13px/1 'Inter', sans-serif; letter-spacing: 0.14em; text-transform: uppercase; color: rgb(255 255 255 / 0.7); }
+      .caption .v { margin-top: 8px; font-size: 19px; font-weight: 600; letter-spacing: -0.01em; }
+    </style>
+  </head>
+  <body>
+    <div class="grid"></div>
+    <div class="glow-a"></div>
+    <div class="glow-b"></div>
+
+    <main class="content">
+      <div class="brand">
+        <div class="mark">S</div>
+        <p class="eyebrow"><b>Portfolio</b> &nbsp;·&nbsp; Indore, India</p>
+      </div>
+      <h1>Shabda Kumar Sinha</h1>
+      <p class="role">Full-Stack <em>MERN</em> Developer</p>
+      <p class="summary">2+ years building production web apps: REST APIs, JWT/RBAC auth, payment integrations and React interfaces.</p>
+      <div class="chips">
+        <span class="chip">React.js</span>
+        <span class="chip">Node.js</span>
+        <span class="chip">Express.js</span>
+        <span class="chip">MongoDB</span>
+      </div>
+    </main>
+
+    <figure class="portrait">
+      <div class="offset"></div>
+      <div class="frame">
+        <img src="../src/assets/images/portrait.jpeg" alt="" />
+        <div class="shade"></div>
+        <div class="caption">
+          <p class="k">Open to opportunities</p>
+          <p class="v">Immediate joiner · Open to relocation</p>
+        </div>
+      </div>
+    </figure>
+  </body>
+</html>

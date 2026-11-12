@@ -1,0 +1,186 @@
+@import 'tailwindcss';
+@import './tokens.css';
+
+/* Dark mode is driven by the data-theme attribute on <html>, not the media query,
+   so the user's explicit choice always wins. */
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+@theme {
+  --font-sans: 'Inter Variable', 'Inter Fallback', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-serif: 'Instrument Serif', ui-serif, Georgia, serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --radius-2xl: 2rem;
+
+  /* Enables the `ease-smooth` utility; same curve as EASE_OUT in utils/motion.js. */
+  --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Every `transition-*` utility defaults to the shared curve and fast duration,
+     so hover states feel identical across components. */
+  --default-transition-duration: 180ms;
+  --default-transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --breakpoint-xs: 26rem;
+}
+
+/* Map runtime CSS variables to Tailwind colour utilities. `inline` keeps the
+   var() reference so utilities update instantly when the theme changes. */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-elevated: var(--bg-elevated);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-fg: var(--fg);
+  --color-muted: var(--fg-muted);
+  --color-subtle: var(--fg-subtle);
+  --color-line: var(--border);
+  --color-line-strong: var(--border-strong);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-fg: var(--accent-fg);
+  --color-inverse: var(--inverse-bg);
+  --color-inverse-fg: var(--inverse-fg);
+  --color-inverse-accent: var(--inverse-accent);
+  --color-success: var(--success);
+
+  --shadow-soft: var(--shadow-sm);
+  --shadow-card: var(--shadow-md);
+  --shadow-float: var(--shadow-lg);
+}
+
+/*
+ * Metric-matched fallback for Inter: while the web font loads, Arial is scaled
+ * to Inter's proportions so text does not reflow (layout shift) when it swaps in.
+ */
+@font-face {
+  font-family: 'Inter Fallback';
+  src: local('Arial'), local('Helvetica Neue'), local('Helvetica');
+  ascent-override: 90.44%;
+  descent-override: 22.52%;
+  line-gap-override: 0%;
+  size-adjust: 107.12%;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    scroll-behavior: smooth;
+    /* Leave room for the fixed navbar when jumping to anchors. */
+    scroll-padding-top: 6rem;
+  }
+
+  body {
+    @apply bg-bg font-sans text-fg antialiased;
+    font-feature-settings: 'cv11', 'ss01', 'ss03';
+    min-height: 100dvh;
+  }
+
+  ::selection {
+    background: var(--accent-soft);
+    color: var(--fg);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+}
+
+@layer components {
+  /* Small uppercase mono label used above headings. */
+  .eyebrow {
+    @apply font-mono text-[0.72rem] font-medium tracking-[0.14em] text-subtle uppercase;
+  }
+
+  /*
+   * Soft highlight that follows the pointer inside a project card.
+   * --spot-x / --spot-y are set from JS on pointer move (fine pointers only).
+   * Sits behind the card content (the card uses `isolate`).
+   */
+  .card-spotlight {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: radial-gradient(
+      28rem circle at var(--spot-x, 50%) var(--spot-y, 50%),
+      var(--accent-soft),
+      transparent 70%
+    );
+    opacity: 0;
+    transition: opacity var(--duration-base) var(--ease-smooth);
+  }
+
+  @media (hover: hover) {
+    .group:hover > .card-spotlight {
+      opacity: 1;
+    }
+  }
+
+  /*
+   * Enlarges a small control's tap area to at least 44×44px without changing
+   * how it looks (WCAG 2.5.5 target size). The element must be `relative`.
+   */
+  .touch-target::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: max(100%, 44px);
+    height: max(100%, 44px);
+    transform: translate(-50%, -50%);
+  }
+
+  /* Faint engineering grid used as a backdrop texture. */
+  .bg-grid {
+    background-image:
+      linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+}
+
+/* Set briefly by ThemeProvider while the theme swaps. */
+[data-theme-switching] *,
+[data-theme-switching] *::before,
+[data-theme-switching] *::after {
+  transition: none !important;
+}
+
+/* Smooth colour cross-fade when the theme toggles (View Transitions API). */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 280ms;
+  animation-timing-function: ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
