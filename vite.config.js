@@ -57,6 +57,9 @@ export default defineConfig(({ command, mode, isPreview }) => {
     base: command === 'build' || isPreview ? basePathFrom(siteUrl) : '/',
     plugins: [react(), tailwindcss(), preloadPrimaryFont(), seoPlugin({ siteUrl })],
     build: {
+      // The Three.js badge (Lanyard) is a deliberately separate, lazily loaded
+      // chunk of ~540 KB (~140 KB gzipped); it never blocks the first paint.
+      chunkSizeWarningLimit: 600,
       // Never inline fonts as data: URLs. Keeps them as cacheable files and lets
       // the Content-Security-Policy stay strict (font-src 'self', no data:).
       assetsInlineLimit: (filePath) => (/\.(woff2?|ttf|otf)$/.test(filePath) ? false : undefined),

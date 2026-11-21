@@ -23,6 +23,9 @@ export const profile = {
 
 export const hero = {
   eyebrow: 'MERN Stack Developer — Node.js & React.js',
+  // Titles from the resume headline, shown in turn in the hero ("I'm a … developer").
+  // The last one is where the rotation stops, and what reduced-motion users see.
+  rotatingTitles: ['Node.js & React.js', 'full-stack', 'MERN stack'],
   // Headline is rendered as: lead + <emphasis> + tail
   headline: {
     lead: 'I build full‑stack web apps that hold up in',

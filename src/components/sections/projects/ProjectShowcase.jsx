@@ -2,6 +2,7 @@ import { useRef } from 'react';
 import { m, useScroll, useSpring, useTransform } from 'motion/react';
 import { Check } from 'lucide-react';
 import { TechList } from '../../common/TechList';
+import { Tilt3D } from '../../common/Tilt3D';
 import { useFinePointer } from '../../../hooks/useFinePointer';
 import { useMotionEnabled } from '../../../hooks/useMotionEnabled';
 import { cn } from '../../../utils/cn';
@@ -40,6 +41,7 @@ export function ProjectShowcase({ project, number, reversed }) {
 
   return (
     <m.div ref={ref} style={enabled ? { scale, opacity, y } : undefined}>
+    <Tilt3D max={4}>
     <article
       aria-labelledby={titleId}
       onPointerMove={finePointer ? trackPointer : undefined}
@@ -98,6 +100,7 @@ export function ProjectShowcase({ project, number, reversed }) {
         </div>
       </div>
     </article>
+    </Tilt3D>
     </m.div>
   );
 }

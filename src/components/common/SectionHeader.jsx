@@ -1,6 +1,7 @@
 import { m } from 'motion/react';
 import { cn } from '../../utils/cn';
 import { drawLine } from '../../utils/motion';
+import BlurText from '../reactbits/BlurText';
 import { RevealGroup, RevealItem } from './Reveal';
 
 const rule = drawLine(0.15);
@@ -28,14 +29,25 @@ export function SectionHeader({ index, eyebrow, title, titleId, description, ali
         />
         {eyebrow}
       </RevealItem>
-      <RevealItem as="div">
-        <h2
-          id={titleId}
-          className="mt-5 text-[clamp(2.25rem,5.2vw,4rem)] leading-[1.03] font-semibold tracking-[-0.045em] text-fg"
-        >
-          {title}
-        </h2>
-      </RevealItem>
+      {/* React Bits BlurText (Framer Motion): words drift in from a blur, one after another,
+          as the heading scrolls into view. Screen readers get the plain title text. */}
+      <h2
+        id={titleId}
+        className="mt-5 text-[clamp(2.25rem,5.2vw,4rem)] leading-[1.03] font-semibold tracking-[-0.045em] text-fg"
+      >
+        <BlurText
+          as="span"
+          text={title}
+          animateBy="words"
+          direction="bottom"
+          delay={70}
+          stepDuration={0.4}
+          blur={12}
+          distance={24}
+          threshold={0.3}
+          className={cn(align === 'center' && 'justify-center')}
+        />
+      </h2>
       {description && (
         <RevealItem as="p" className="mt-6 max-w-2xl text-[1.0625rem] leading-relaxed text-muted sm:text-lg">
           {description}

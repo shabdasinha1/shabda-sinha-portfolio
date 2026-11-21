@@ -8,6 +8,7 @@ import { Projects } from './components/sections/projects/Projects';
 import { Skills } from './components/sections/skills/Skills';
 import { Education } from './components/sections/education/Education';
 import { Contact } from './components/sections/contact/Contact';
+import { TechMarquee } from './components/sections/marquee/TechMarquee';
 
 export default function App() {
   return (
@@ -21,6 +22,7 @@ export default function App() {
         <MotionConfig reducedMotion="user">
           <Layout>
             <Hero />
+            <TechMarquee />
             <About />
             <Experience />
             <Projects />

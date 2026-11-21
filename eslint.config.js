@@ -21,6 +21,13 @@ export default [
     },
   },
   {
+    // Vendored React Bits components keep their upstream code. They update a
+    // "latest settings" ref during render and set state from effects (both safe
+    // in React 19 without the React Compiler), which the compiler-oriented rules reject.
+    files: ['src/components/reactbits/**/*.jsx'],
+    rules: { 'react-hooks/refs': 'off', 'react-hooks/set-state-in-effect': 'off' },
+  },
+  {
     // Build tooling runs in Node, not the browser.
     files: ['vite.config.js', 'eslint.config.js', 'build/**/*.js'],
     languageOptions: { globals: globals.node },

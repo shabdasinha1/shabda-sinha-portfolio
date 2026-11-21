@@ -50,9 +50,10 @@ export function Navbar({ menuOpen, setMenuOpen }) {
       <div
         className={cn(
           'relative border-b transition-[background-color,border-color,backdrop-filter] duration-(--duration-base) ease-smooth',
-          elevated
-            ? 'border-line bg-[var(--nav-bg)] backdrop-blur-2xl backdrop-saturate-[1.8]'
-            : 'border-transparent bg-transparent',
+          // Always a glass backing (as Apple's nav), so links stay readable over the
+          // hero aurora; the hairline border appears once the page scrolls.
+          'bg-[var(--nav-bg)] backdrop-blur-2xl backdrop-saturate-[1.8]',
+          elevated ? 'border-line' : 'border-transparent',
         )}
       >
         <ScrollProgress />

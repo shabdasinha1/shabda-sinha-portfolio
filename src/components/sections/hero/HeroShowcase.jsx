@@ -1,15 +1,14 @@
 import { useRef } from 'react';
 import { m, useScroll, useSpring, useTransform } from 'motion/react';
-import { MapPin } from 'lucide-react';
-import portrait from '../../../assets/images/portrait.jpeg';
-import { hero, profile } from '../../../data/profile';
+import { hero } from '../../../data/profile';
 import { useMotionEnabled } from '../../../hooks/useMotionEnabled';
 import { EASE_OUT, SCROLL_SPRING } from '../../../utils/motion';
 import { TechList } from '../../common/TechList';
+import { HeroBadge } from './HeroBadge';
 import { HeroStats } from './HeroStats';
 
 /**
- * The hero's "product shot": portrait, most recent role, key numbers and core
+ * The hero's "product shot": a 3D ID badge (HeroBadge), most recent role, key numbers and core
  * stack in one large panel. In the style of Apple's product reveals it starts
  * tilted back and slightly smaller, and settles flat as it scrolls into view.
  * Scroll-linked values are spring-smoothed; reduced motion renders it flat.
@@ -39,20 +38,7 @@ export function HeroShowcase() {
         className="overflow-hidden rounded-[2rem] border border-line bg-surface text-left shadow-float sm:rounded-[2.5rem]"
       >
         <div className="grid md:grid-cols-[0.85fr_1.15fr]">
-          <figure className="group relative overflow-hidden bg-surface-muted">
-            <img
-              src={portrait}
-              alt={`Portrait of ${profile.name}`}
-              width="720"
-              height="1035"
-              decoding="async"
-              className="aspect-[4/5] h-full w-full object-cover object-[50%_20%] transition-transform duration-[1200ms] ease-smooth group-hover:scale-[1.04] md:aspect-auto"
-            />
-            <figcaption className="absolute top-4 left-4 inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-black/35 px-3 py-1.5 text-xs font-medium text-white backdrop-blur-md">
-              <MapPin className="size-3.5" strokeWidth={2} aria-hidden="true" />
-              {profile.shortLocation}
-            </figcaption>
-          </figure>
+          <HeroBadge />
 
           <div className="flex flex-col gap-8 p-6 sm:p-10">
             <div>

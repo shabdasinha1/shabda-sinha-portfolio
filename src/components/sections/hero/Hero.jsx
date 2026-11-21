@@ -3,7 +3,12 @@ import { m, useScroll, useSpring, useTransform } from 'motion/react';
 import { ArrowRight, Download } from 'lucide-react';
 import { hero, profile } from '../../../data/profile';
 import { useMotionEnabled } from '../../../hooks/useMotionEnabled';
+import { useTheme } from '../../../hooks/useTheme';
+import { BRAND_GRADIENT } from '../../../utils/brand';
 import { drawLine, EASE_OUT, SCROLL_SPRING, stagger } from '../../../utils/motion';
+import GradientText from '../../reactbits/GradientText';
+import Magnet from '../../reactbits/Magnet';
+import RotatingText from '../../reactbits/RotatingText';
 import { Button } from '../../common/Button';
 import { Container } from '../../common/Container';
 import { SocialLinks } from '../../common/SocialLinks';
@@ -31,6 +36,8 @@ export function Hero() {
   const { headline } = hero;
   const sectionRef = useRef(null);
   const enabled = useMotionEnabled();
+  const { theme } = useTheme();
+  const titles = hero.rotatingTitles;
 
   // 0 → 1 while the top of the hero travels from the top of the screen to off-screen.
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end start'] });
@@ -57,8 +64,25 @@ export function Hero() {
               <StatusBadge>{profile.availability}</StatusBadge>
             </m.div>
 
-            <m.p variants={fadeUp} className="eyebrow mt-8">
-              {hero.eyebrow}
+            {/* React Bits RotatingText: runs through the resume titles once (~3.6s) and
+                stops, so it never needs a pause control (WCAG 2.2.2). */}
+            <m.p
+              variants={fadeUp}
+              className="mt-8 flex flex-wrap items-center justify-center gap-x-3.5 gap-y-1 text-lg font-medium tracking-[-0.01em] text-fg sm:text-xl [text-shadow:0_0_18px_var(--bg),0_0_6px_var(--bg)]"
+            >
+              <span>I&apos;m a</span>
+              <RotatingText
+                texts={enabled ? titles : titles.slice(-1)}
+                auto={enabled}
+                loop={false}
+                rotationInterval={1800}
+                highlight
+                highlightColor="#0071e3"
+                staggerDuration={0.02}
+                staggerFrom="last"
+                mainClassName="font-semibold"
+              />
+              <span>developer</span>
             </m.p>
 
             <m.h1
@@ -68,7 +92,15 @@ export function Hero() {
             >
               {headline.lead}{' '}
               <span className="relative inline-block">
-                <span className="text-gradient">{headline.emphasis}</span>
+                {/* React Bits GradientText: the brand gradient drifts slowly (paused for reduced motion).
+                    The descendant padding keeps the "p" descender inside the painted area. */}
+                <GradientText
+                  colors={BRAND_GRADIENT[theme]}
+                  animationSpeed={7}
+                  className="[&_span]:pb-[0.1em]"
+                >
+                  {headline.emphasis}
+                </GradientText>
                 <m.span
                   aria-hidden="true"
                   variants={underline}
@@ -85,20 +117,25 @@ export function Hero() {
               {hero.intro}
             </m.p>
 
+            {/* React Bits Magnet: buttons lean toward a nearby mouse pointer (off for touch and reduced motion). */}
             <m.div variants={fadeUp} className="mt-10 flex flex-wrap items-center justify-center gap-3">
-              <Button href={hero.primaryCta.href} size="lg" icon={ArrowRight}>
-                {hero.primaryCta.label}
-              </Button>
-              <Button
-                href={profile.resume.href}
-                download={profile.resume.fileName}
-                size="lg"
-                variant="secondary"
-                icon={Download}
-                iconPosition="start"
-              >
-                {hero.secondaryCta.label}
-              </Button>
+              <Magnet padding={60} magnetStrength={5} maxOffset={10}>
+                <Button href={hero.primaryCta.href} size="lg" icon={ArrowRight}>
+                  {hero.primaryCta.label}
+                </Button>
+              </Magnet>
+              <Magnet padding={60} magnetStrength={5} maxOffset={10}>
+                <Button
+                  href={profile.resume.href}
+                  download={profile.resume.fileName}
+                  size="lg"
+                  variant="secondary"
+                  icon={Download}
+                  iconPosition="start"
+                >
+                  {hero.secondaryCta.label}
+                </Button>
+              </Magnet>
             </m.div>
 
             <m.div variants={fadeUp} className="mt-8 flex justify-center">

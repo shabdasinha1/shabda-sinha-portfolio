@@ -1,7 +1,8 @@
 # Shabda Kumar Sinha — Developer Portfolio
 
 Personal portfolio of **Shabda Kumar Sinha**, Full-Stack MERN Developer based in Indore, India.
-A fast, accessible single-page site built with React, Vite, JavaScript, Tailwind CSS and Motion,
+A fast, accessible single-page site built with React, Vite, JavaScript, Tailwind CSS, Motion,
+[React Bits](https://reactbits.dev) and Three.js,
 deployed as static files to GitHub Pages with GitHub Actions. There is no backend.
 
 All professional content comes from my résumé
@@ -26,7 +27,9 @@ More screenshots (desktop, tablet and mobile, both themes) are in
 | UI | [React 19](https://react.dev), JavaScript (no TypeScript) |
 | Build | [Vite 8](https://vite.dev) |
 | Styling | [Tailwind CSS v4](https://tailwindcss.com) with CSS custom properties as design tokens |
-| Animation | [Motion](https://motion.dev) for React: scroll-linked effects and spring-smoothed reveals (`LazyMotion` + `m` components) |
+| Animation | [Motion](https://motion.dev) for React: scroll-linked effects, spring-smoothed reveals and 3D tilt (`LazyMotion` + `m` components) |
+| Components | [React Bits](https://reactbits.dev) (vendored and adapted, see [Credits](#credits)) |
+| 3D / WebGL | [Three.js](https://threejs.org) for the hero ID badge; raw WebGL2 for the aurora and the ball pit |
 | Icons | [Lucide](https://lucide.dev), plus inline SVG brand marks |
 | Fonts | Self-hosted via Fontsource: [Geist and Geist Mono](https://vercel.com/font) |
 | Quality | ESLint 10 |
@@ -40,7 +43,13 @@ More screenshots (desktop, tablet and mobile, both themes) are in
   visitor's choice, and never flashes the wrong theme on load.
 - **Responsive:** checked at 320, 375, 430, 768, 1024, 1280, 1440 and 1920 px wide.
 - **Accessible:** semantic landmarks, skip link, full keyboard support, visible focus rings,
-  WCAG AA colour contrast in both themes, 44 px touch targets, and an accessible mobile menu.
+  WCAG AA colour contrast in both themes (measured on the rendered pixels, including over the
+  aurora), touch targets of at least 24 px, and an accessible mobile menu. Decorative 3D and
+  WebGL effects are hidden from screen readers.
+- **3D and interactive extras (React Bits):** a Three.js ID badge on a lanyard that you can
+  grab and fling, a WebGL aurora behind the hero, a "full-stack / MERN stack" rotating title,
+  gradient headline text, magnetic buttons, cursor-lit cards, a scroll-driven tech marquee,
+  blur-in section titles, click sparks and a ball-pit playground in the contact section.
 - **Apple-style motion:** a hero that recedes as you scroll, a portrait showcase that tilts up
   into place, a statement whose words light up as you read, a timeline that fills with scroll,
   count-up numbers, blur-in reveals and a scroll-progress line. All scroll effects are
@@ -48,6 +57,10 @@ More screenshots (desktop, tablet and mobile, both themes) are in
   when the system asks for reduced motion.
 - **Performance:** lightweight Motion bundle, resized portrait, preloaded main font,
   metric-matched fallback font (no layout shift), and long-term caching of built assets.
+  The heavy effects never block the first paint: the Three.js badge (~140 KB gzipped) is a
+  separate chunk loaded only after the page has settled, the aurora starts after the hero
+  entrance, and the ball pit loads only when the contact section is near. Without WebGL2 the
+  portrait and CSS backgrounds are shown instead.
 - **SEO and sharing:** meta and Open Graph / X card tags, JSON-LD structured data (Person and
   WebSite), a 1200×630 social preview image, `robots.txt`, `sitemap.xml` and app icons.
 - **Production hardening:** strict hash-based Content-Security-Policy, referrer policy, and a
@@ -59,22 +72,23 @@ More screenshots (desktop, tablet and mobile, both themes) are in
 .
 ├── build/
 │   └── seo-plugin.js      Build-time SEO: meta tags, CSP, JSON-LD, 404.html, robots.txt, sitemap.xml
-├── design/                HTML sources for the social preview image and app icons
+├── design/                HTML sources for the social preview image, app icons and badge textures
 ├── .github/workflows/     deploy.yml: lint, build and publish to GitHub Pages
 ├── docs/screenshots/      Final screenshots used in this README
 ├── public/                Static files copied as-is: résumé, icons, og-image, manifest, 404 styles
 ├── src/
-│   ├── assets/images/     Portrait
+│   ├── assets/images/     Portrait and the two badge textures (front and back)
 │   ├── components/
 │   │   ├── common/        Reusable building blocks (Button, Section, Reveal, ThemeToggle…)
 │   │   ├── icons/         Icon helpers
 │   │   ├── layout/        Navbar, mobile menu, footer, skip link
+│   │   ├── reactbits/     Vendored React Bits components (adapted; see Credits)
 │   │   └── sections/      One folder per page section (hero, about, experience…)
 │   ├── context/           Theme provider
 │   ├── data/              All site content and SEO settings
 │   ├── hooks/             Scroll, theme, pointer and clipboard hooks
 │   ├── styles/            Design tokens (tokens.css) and Tailwind setup (index.css)
-│   ├── utils/             Small helpers (class names, motion presets, theme storage)
+│   ├── utils/             Small helpers (class names, motion presets, brand colours, theme storage, deferred start)
 │   ├── App.jsx
 │   └── main.jsx
 ├── index.html
@@ -217,6 +231,18 @@ HTML instead (see [`build/seo-plugin.js`](build/seo-plugin.js)):
 which use the site's own fonts, colours and portrait. After editing a template, open it in
 Chrome and capture it at its exact size (DevTools → device toolbar → set the size →
 "Capture screenshot"). The icon template takes `?size=512&variant=rounded|square|maskable`.
+
+The 3D badge textures `src/assets/images/badge-front.jpg` and `badge-back.jpg` come from
+[`design/badge.html`](design/badge.html) (`?side=front|back`, 640×900; capture at 1.5× and
+save as JPEG).
+
+## Credits
+
+Several interactive components are adapted from [React Bits](https://reactbits.dev) by David Haz,
+copied into [`src/components/reactbits/`](src/components/reactbits) so they can be tuned for
+this site (for example: `m` components for `LazyMotion`, reduced-motion support, and
+accessibility fixes). Each file notes its source and the local changes. React Bits is licensed
+under MIT + Commons Clause; see [`src/components/reactbits/LICENSE.md`](src/components/reactbits/LICENSE.md).
 
 ## License
 

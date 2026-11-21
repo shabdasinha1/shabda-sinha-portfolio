@@ -25,18 +25,18 @@ export function Skills() {
         </Reveal>
       </div>
 
-      {/* gap-px over a line-coloured background draws crisp 1px dividers between cells. */}
+      {/* Bento grid of glowing cards (React Bits SpotlightCard via GlowCard). */}
       <RevealGroup
         as="ul"
         gap={0.07}
-        className="mt-14 grid gap-px overflow-hidden rounded-3xl border border-line bg-line shadow-card sm:grid-cols-2 lg:grid-cols-6"
+        className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-6"
         aria-label="Skill groups"
       >
         {skillGroups.map((group, i) => (
           <RevealItem
             as="li"
             key={group.id}
-            className={`bg-surface ${SPANS[i]} ${i === skillGroups.length - 1 ? 'sm:col-span-2' : ''}`}
+            className={`${SPANS[i]} ${i === skillGroups.length - 1 ? 'sm:col-span-2' : ''}`}
           >
             <SkillGroup {...group} />
           </RevealItem>

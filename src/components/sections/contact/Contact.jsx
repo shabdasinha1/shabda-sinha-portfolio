@@ -6,6 +6,7 @@ import { Container } from '../../common/Container';
 import { RevealGroup, RevealItem } from '../../common/Reveal';
 import { CopyEmailButton } from './CopyEmailButton';
 import { ContactLink } from './ContactLink';
+import { ContactPlayground } from './ContactPlayground';
 
 const mailtoHref = `mailto:${profile.email}?subject=${encodeURIComponent(contact.emailSubject)}`;
 const profileLinks = socials.filter((s) => s.id !== 'email');
@@ -85,6 +86,8 @@ export function Contact() {
               ))}
             </RevealItem>
           </div>
+
+          <ContactPlayground />
         </RevealGroup>
       </Container>
     </section>
